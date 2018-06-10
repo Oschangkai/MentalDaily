@@ -11,7 +11,8 @@ export const environment = {
     projectId: "sappy-yzu-big-data",
     storageBucket: "sappy-yzu-big-data.appspot.com",
     messagingSenderId: "750030897442"
-  }
+  },
+  nonAuthenticationUrl: ['/', 'auth', 'signin']
 };
 
 /*

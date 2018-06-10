@@ -1,35 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
-
-import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, of, from } from 'rxjs';
-
+import * as firebase from 'firebase';
+import { catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, from } from 'rxjs';
 import { User } from '../model/user.model';
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  currentUser$ = new BehaviorSubject(null);
+  fireUser$: Observable<firebase.User>;
+  currentUser$ = new BehaviorSubject<User>(null);
 
   constructor(
     private _afAuth: AngularFireAuth,
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {
+    this.fireUser$ = this._afAuth.authState;
     // 由於這個 Service 會永遠存活，我們不需對她做 unsubscribe
     this._afAuth.authState
       .subscribe(user => {
-        if (!user) {
-          this._router.navigateByUrl('/login');
-        }
         this.currentUser$.next(user);
         console.log(user);
+        this.returnUrl(user);
       });
   }
 
   loginByEmail(email: string, password: string) {
+    this.storeUrl();
     return from(this._afAuth.auth.signInWithEmailAndPassword(email, password))
       .pipe(catchError((e) => this.handleError(e)))
   }
@@ -45,6 +45,21 @@ export class AuthService {
 
   logout() {
     return from(this._afAuth.auth.signOut());
+  }
+
+  private storeUrl() {
+    const returnUrl = this._route.snapshot.queryParamMap.get('returnUrl') || '/';
+    localStorage.setItem('returnUrl', returnUrl);
+  }
+
+  private returnUrl(user: User) {
+    if (user) {
+      const returnUrl = this._route.snapshot.queryParamMap.get('returnUrl') || localStorage.getItem('returnUrl');
+      if (returnUrl) {
+        this._router.navigateByUrl(returnUrl);
+        localStorage.removeItem('returnUrl');
+      }
+    }
   }
 
 

@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(public _auth: AuthService, private _fb: FormBuilder) {
-    // this._auth.logout();
+    this._auth.logout();
   }
 
   get email() { return this.loginForm.get('email'); }
