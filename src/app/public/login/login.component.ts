@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { auth } from 'firebase/app';
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'login',
@@ -9,19 +11,31 @@ import { auth } from 'firebase/app';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public afAuth: AngularFireAuth) { 
-    this.afAuth.authState.subscribe((data) => {
-      console.log(data);
+  ngOnInit() {
+    this.loginForm = this._fb.group({
+      'email': ['', [Validators.email, Validators.required]],
+      'password': ['', [
+        Validators.required,
+        Validators.pattern('^([a-zA-Z0-9]+)$'),
+        Validators.minLength(6)
+      ]]
     });
   }
 
-  ngOnInit() {
+  loginForm: FormGroup;
+
+  constructor(public _auth: AuthService, private _fb: FormBuilder) {
+    // this._auth.logout();
   }
-  emailLogin() {
-    this.afAuth.auth.signInWithPopup(new auth.EmailAuthProvider());
+
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
+
+  loginByEmail() {
+    this._auth.loginByEmail(this.email.value, this.password.value);
   }
   logout() {
-    this.afAuth.auth.signOut();
+    this._auth.logout()
   }
 
   cardHover(onCard: boolean) {
