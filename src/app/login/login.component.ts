@@ -12,4 +12,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  cardHover(onCard: boolean) {
+    let el = document.getElementById("login-card");
+    // el.classList.toggle('mat-elevation-z5');
+    onCard? el.classList.add('mat-elevation-z3') : el.classList.remove('mat-elevation-z3');
+  }
+
 }

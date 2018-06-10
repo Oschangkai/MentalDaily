@@ -1,17 +1,22 @@
-<mat-toolbar>Hey I'm so tired</mat-toolbar>
+<div class="login">
+  <div class="login-meta">
+    <h1 class="head-poisition" color="primary">登入</h1>
+  </div>
+  <mat-card id="login-card" class="login-card" (mouseover)="cardHover(1)" (mouseleave)="cardHover(0)">
+    <form class="login-form">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="電子郵件地址或使用者名稱">
+      </mat-form-field>
+  
+      <mat-form-field class="full-width">
+        <input matInput type="password" placeholder="密碼">
+      </mat-form-field>
+    </form>
+    <div class="login-card-bottom">
+      <div></div>
+      <span class="fill-space"></span>
+      <button mat-raised-button class="send" color="primary">登入</button>
+    </div>
+  </mat-card>
+</div>
 
-
-<h1 class="head-poisition">Login</h1>
-<mat-card class="card-class">
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Username or E-mail">
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width">
-      <input matInput type="password" placeholder="Password">
-    </mat-form-field>
-  </form>
-  <button mat-button class="send">登入</button>
-
-</mat-card>
