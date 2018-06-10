@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { auth } from 'firebase/app';
 
 @Component({
   selector: 'login',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(public afAuth: AngularFireAuth) { 
+    this.afAuth.authState.subscribe((data) => {
+      console.log(data);
+    });
+  }
 
   ngOnInit() {
+  }
+  emailLogin() {
+    this.afAuth.auth.signInWithPopup(new auth.EmailAuthProvider());
+  }
+  logout() {
+    this.afAuth.auth.signOut();
   }
 
   cardHover(onCard: boolean) {
