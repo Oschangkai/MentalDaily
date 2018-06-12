@@ -12,7 +12,7 @@ export const environment = {
     storageBucket: "sappy-yzu-big-data.appspot.com",
     messagingSenderId: "750030897442"
   },
-  nonAuthenticationUrl: ['/', 'auth', 'signin']
+  nonAuthenticationUrl: ['/', 'login']
 };
 
 /*

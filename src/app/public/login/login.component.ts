@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../../service/auth.service';
+import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/material';
+
+
 
 @Component({
   selector: 'login',
@@ -22,6 +25,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
+  title = ''
   loginForm: FormGroup;
 
   constructor(public _auth: AuthService, private _fb: FormBuilder) {
@@ -32,7 +37,15 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
 
   loginByEmail() {
-    this._auth.loginByEmail(this.email.value, this.password.value);
+
+    this.title = ''
+    if (this.email.valid && this.password.valid) {
+      this._auth.loginByEmail(this.email.value, this.password.value);
+    }
+    else {
+
+      this.title = '驗證失敗'
+    }
   }
   logout() {
     this._auth.logout()
@@ -41,7 +54,7 @@ export class LoginComponent implements OnInit {
   cardHover(onCard: boolean) {
     let el = document.getElementById("login-card");
     // el.classList.toggle('mat-elevation-z5');
-    onCard? el.classList.add('mat-elevation-z3') : el.classList.remove('mat-elevation-z3');
+    onCard ? el.classList.add('mat-elevation-z3') : el.classList.remove('mat-elevation-z3');
   }
 
 }

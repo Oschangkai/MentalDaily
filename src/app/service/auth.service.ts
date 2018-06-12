@@ -39,7 +39,7 @@ export class AuthService {
     // 修改前要再次登入一次
     this.loginByEmail(this._afAuth.auth.currentUser.email, oldPassword)
       .pipe(() => from(
-          this._afAuth.auth.currentUser.updatePassword(newPassword)
+        this._afAuth.auth.currentUser.updatePassword(newPassword)
       ));
   }
 
@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   private storeUrl() {
-    const returnUrl = this._route.snapshot.queryParamMap.get('returnUrl') || '/';
+    const returnUrl = this._route.snapshot.queryParamMap.get('returnUrl') || '/note';
     localStorage.setItem('returnUrl', returnUrl);
   }
 
