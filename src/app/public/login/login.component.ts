@@ -1,10 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 import { AuthService } from '../../service/auth.service';
-import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/material';
-
 
 
 @Component({
@@ -25,11 +23,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
-  title = ''
   loginForm: FormGroup;
 
-  constructor(public _auth: AuthService, private _fb: FormBuilder) {
+  constructor(
+    public _auth: AuthService,
+    private _fb: FormBuilder,
+    public snackBar: MatSnackBar
+  ) {
     this._auth.logout();
   }
 
@@ -37,15 +37,20 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
 
   loginByEmail() {
-
-    this.title = ''
-    if (this.email.valid && this.password.valid) {
-      this._auth.loginByEmail(this.email.value, this.password.value);
+    if (this.loginForm.valid) {
+      this._auth.loginByEmail(this.email.value, this.password.value)
+        .subscribe(m => {
+          if(typeof(m) === "string") {
+            this.snackBar.open(m, '確認');
+          } else this.snackBar.dismiss();
+        });
     }
     else {
-
-      this.title = '驗證失敗'
+      this.snackBar.open('格式錯誤，請檢查欄位', '確認')
     }
+  }
+  loginByGoogle() {
+    this._auth.loginByGoogle().subscribe();
   }
   logout() {
     this._auth.logout()

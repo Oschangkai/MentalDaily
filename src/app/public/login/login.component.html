@@ -3,9 +3,7 @@
 
 <div class="login">
   <div class="login-meta">
-    <h1 class="head-poisition" color="primary">登入
-
-    </h1>
+    <h1 class="head-poisition" color="primary">登入</h1>
   </div>
   <mat-card id="login-card" class="login-card" (mouseover)="cardHover(1)" (mouseleave)="cardHover(0)">
     <form name='login-form' class="login-form" [formGroup]="loginForm" (ngSubmit)="loginByEmail()">
@@ -27,15 +25,11 @@
         <button mat-raised-button class="send" color="primary">登入</button>
       </div>
     </form>
-    <hr>
-    <div class="google-login">
-      <button mat-raised-button color="warn">
-        <i class="fab fa-google" style="margin-right: 15px"></i>Sign in with Google
-      </button>
-    </div>
   </mat-card>
-  <div class="errormessage">
-    {{title}}
+  <div class="google-login">
+    <button mat-raised-button color="warn" (click)="loginByGoogle()">
+      <i class="fab fa-google" style="margin-right: 15px"></i>
+      使用 Google 帳號登入
+    </button>
   </div>
-
 </div>

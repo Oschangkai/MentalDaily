@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
-import { catchError } from 'rxjs/operators';
+import { auth as fAuth, User as fUser } from 'firebase';
+
+import { catchError, tap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, of, from } from 'rxjs';
+
 import { User } from '../model/user.model';
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  fireUser$: Observable<firebase.User>;
+  fireUser$: Observable<fUser>;
   currentUser$ = new BehaviorSubject<User>(null);
 
   constructor(
@@ -23,7 +28,7 @@ export class AuthService {
     this._afAuth.authState
       .subscribe(user => {
         this.currentUser$.next(user);
-        console.log(user);
+        // console.log(user);
         this.returnUrl(user);
       });
   }
@@ -31,10 +36,21 @@ export class AuthService {
   loginByEmail(email: string, password: string) {
     this.storeUrl();
     return from(this._afAuth.auth.signInWithEmailAndPassword(email, password))
-      .pipe(catchError((e) => this.handleError(e)))
+      .pipe(
+        tap(user => console.log(JSON.stringify(user))),
+        catchError(e => this.handleError(e))
+      )
   }
 
-  // Sends email allowing user to reset password
+  loginByGoogle() {
+    this.storeUrl();
+    return from(this._afAuth.auth.signInWithPopup( new fAuth.GoogleAuthProvider() ))
+    .pipe(
+      tap(user => console.log(JSON.stringify(user))),
+      catchError(e => this.handleError(e))
+    )
+  }
+
   resetPassword(oldPassword: string, newPassword: string) {
     // 修改前要再次登入一次
     this.loginByEmail(this._afAuth.auth.currentUser.email, oldPassword)
@@ -64,7 +80,12 @@ export class AuthService {
 
 
   private handleError(err) {
-    console.log(err);
-    return of(`Error: ${err}`);
+    switch(err.code) {
+      case "auth/wrong-password":
+        return of("密碼錯誤");
+      case "auth/user-not-found":
+        return of("使用者不存在");
+    }
+    return of(`Error: ${err.code}`);
   }
 }
