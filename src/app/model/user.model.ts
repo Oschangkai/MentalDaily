@@ -1,9 +1,13 @@
 export interface User {
-  uid?: string;
-  email: string;
   displayName?: string;
-  type?: string;
-  catchPhrase?: string;
+  email: string;
+  emailVerified: boolean;
+  isAnonymous: boolean;
   photoURL?: string;
-  lastSignInTime?: string;
+  // providerData: [providerData];
+  uid: string;
+}
+class providerData {
+  refreshToken: string;
+  uid: string;
 }
