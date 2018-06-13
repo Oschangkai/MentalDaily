@@ -3,7 +3,7 @@
 
 <div class="login">
   <div class="login-meta">
-    <h1 class="head-poisition" color="primary">登入</h1>
+    <h1 color="primary">心憂日記</h1>
   </div>
   <mat-card id="login-card" class="login-card" (mouseover)="cardHover(1)" (mouseleave)="cardHover(0)">
     <form name='login-form' class="login-form" [formGroup]="loginForm" (ngSubmit)="loginByEmail()">
@@ -22,7 +22,7 @@
       <div class="login-card-bottom">
         <div></div>
         <span class="fill-space"></span>
-        <button mat-raised-button class="send" color="primary">登入</button>
+        <button mat-button class="send" color="primary">登入<mat-icon style="margin-left: 8px">send</mat-icon></button>
       </div>
     </form>
   </mat-card>

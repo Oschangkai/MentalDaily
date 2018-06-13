@@ -8,7 +8,7 @@
 }
 
 .login-meta {
-  padding-right: 350px;
+  padding-right: 265px;
 }
 
 @media only screen and (max-width: 435px) {
@@ -22,13 +22,15 @@
 
 .login-card {
   border-radius: 8px;
-  padding: 48px 40px 36px;
+  padding: 36px 24px 18px;
+  // padding: 48px 40px 36px;
   max-width: 350px;
 }
 
 .login-card-bottom {
   display: flex;
   align-items: flex-end;
+  padding-top: 25px;
 }
 
 .fill-space {
