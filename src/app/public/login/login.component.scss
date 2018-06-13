@@ -29,7 +29,6 @@
 .login-card-bottom {
   display: flex;
   align-items: flex-end;
-  margin-bottom: 40px
 }
 
 .fill-space {
@@ -63,4 +62,8 @@
   justify-content: center;
   flex-direction: column;
   display: flex;
+}
+
+.hrsize {
+  width: 35%
 }
