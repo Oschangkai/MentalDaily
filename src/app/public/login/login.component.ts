@@ -13,6 +13,7 @@ import { AuthService } from '../../service/auth.service';
 export class LoginComponent implements OnInit {
 
   ngOnInit() {
+    this.sending = false;
     this.loginForm = this._fb.group({
       'email': ['', [Validators.email, Validators.required]],
       'password': ['', [
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginForm: FormGroup;
+  sending: boolean;
 
   constructor(
     public _auth: AuthService,
@@ -38,15 +40,17 @@ export class LoginComponent implements OnInit {
 
   loginByEmail() {
     if (this.loginForm.valid) {
+      this.sending = true;
       this._auth.loginByEmail(this.email.value, this.password.value)
         .subscribe(m => {
           if(typeof(m) === "string") {
             this.snackBar.open(m, '確認');
+            this.sending = false;
           } else this.snackBar.dismiss();
         });
     }
     else {
-      this.snackBar.open('格式錯誤，請檢查欄位', '確認')
+      this.snackBar.open('格式錯誤，請檢查欄位', '確認');
     }
   }
   loginByGoogle() {

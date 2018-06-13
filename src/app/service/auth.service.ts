@@ -85,6 +85,10 @@ export class AuthService {
         return of("密碼錯誤");
       case "auth/user-not-found":
         return of("使用者不存在");
+      case "auth/too-many-requests":
+        return of("嘗試登入次數過多，請稍後再試");
+      case "auth/network-request-failed":
+        return of("請檢查網路連線");
     }
     return of(`Error: ${err.code}`);
   }

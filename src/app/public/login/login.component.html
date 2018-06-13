@@ -22,7 +22,10 @@
       <div class="login-card-bottom">
         <a routerLink="/register">以電子郵件註冊</a>
         <span class="fill-space"></span>
-        <button mat-button class="send" color="primary">登入<mat-icon style="margin-left: 8px">send</mat-icon></button>
+        <button mat-button *ngIf="!sending" class="send" color="primary">登入
+          <mat-icon style="margin-left: 8px">send</mat-icon>
+        </button>
+        <mat-spinner *ngIf="sending" diameter=28 class="login-spinner"></mat-spinner>
       </div>
     </form>
   </mat-card>
