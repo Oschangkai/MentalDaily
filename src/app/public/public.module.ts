@@ -8,6 +8,7 @@ import { FirebaseModule } from '../firebase.module';
 
 import { PublicComponent } from './public.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { LoginComponent } from './login/login.component';
     MaterialModule,
     FirebaseModule
   ],
-  declarations: [PublicComponent, LoginComponent]
+  declarations: [PublicComponent, LoginComponent, RegisterComponent]
 })
 export class PublicModule { }
