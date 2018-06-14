@@ -1,13 +1,14 @@
-export interface User {
+export interface User extends providerData {
   displayName?: string;
   email: string;
   emailVerified: boolean;
   isAnonymous: boolean;
   photoURL?: string;
-  // providerData: [providerData];
+  providerData: providerData;
   uid: string;
+  refreshToken: string;
 }
-class providerData {
+export interface providerData {
   refreshToken: string;
   uid: string;
 }
