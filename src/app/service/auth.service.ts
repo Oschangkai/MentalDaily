@@ -8,7 +8,7 @@ import { catchError, tap, flatMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, of, from } from 'rxjs';
 import * as firebase from 'firebase';
 
-import { User } from '../model/user.model';
+import { User, providerData } from '../model/user.model';
 
 
 
@@ -19,6 +19,7 @@ export class AuthService {
 
   fireUser$: Observable<fUser>;
   currentUser$ = new BehaviorSubject<User>(null);
+  // currentUser$ = new BehaviorSubject<fUser>(null);
 
 
   constructor(
@@ -30,9 +31,10 @@ export class AuthService {
     // 由於這個 Service 會永遠存活，我們不需對她做 unsubscribe
     this._afAuth.authState
       .subscribe(user => {
-        this.currentUser$.next(user);
-        // console.log(user);
-        this.returnUrl(user);
+        const u = this.sappy(JSON.stringify(user));
+        // console.log(JSON.stringify(u));
+        this.currentUser$.next(u);
+        this.returnUrl(u);
       });
   }
 
@@ -40,7 +42,7 @@ export class AuthService {
     this.storeUrl();
     return from(this._afAuth.auth.signInWithEmailAndPassword(email, password))
       .pipe(
-        tap(user => console.log(JSON.stringify(user))),
+        tap(user => console.log("Login Success!")),
         catchError(e => this.handleError(e))
       )
   }
@@ -89,6 +91,28 @@ export class AuthService {
         localStorage.removeItem('returnUrl');
       }
     }
+  }
+
+  private sappy(s: any): User {
+    if(typeof(s)!='undefined' && s && s!='null') {
+      s = JSON.parse(s);
+      const pd: providerData = {
+        uid: s.uid,
+        refreshToken: s.stsTokenManager.refreshToken
+      };
+      var u: User = {
+        displayName: s.displayName,
+        email: s.email,
+        emailVerified: s.emailVerified,
+        isAnonymous: s.isAnonymous,
+        photoURL: s.photoURL,
+        providerData: pd,
+        uid: s.uid,
+        refreshToken: s.stsTokenManager.refreshToken
+      };
+      return u;
+    }
+    return null;
   }
 
 
