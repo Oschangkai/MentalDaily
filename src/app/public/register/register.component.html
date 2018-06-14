@@ -1,5 +1,5 @@
 <mat-card class="register-card">
-  <form name='register-form' [formGroup]="registerForm" class="register-form">
+  <form name='register-form' [formGroup]="registerForm" class="register-form" (ngSubmit)="signup()">
 
     <mat-form-field class="full-width">
       <input matInput type="email" placeholder="電子郵件地址" formControlName="email">
@@ -9,21 +9,22 @@
 
     <mat-form-field class="half-width">
       <input matInput type="password" placeholder="密碼" formControlName="password">
-      <!-- mat-error *ngIf="password.invalid && password.touched">
+      <mat-error *ngIf="password.invalid && password.touched">
         密碼必須大於六碼
-      </mat-error -->
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="half-width" style="margin-left: 10%">
-      <input type="password" matInput placeholder="確認密碼">
+      <input type="password" matInput placeholder="確認密碼" formControlName="confirmpassword">
+      <mat-error *ngIf="confirmpassword.invalid && confirmpassword.touched">與密碼不一致</mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <input matInput placeholder="使用者名稱">
-    </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <input matInput type="date" placeholder="生日">
-    </mat-form-field>
+    <div class="register-card-button">
+      <button mat-button *ngIf="!sending" class="send" color="primary">註冊
+        <mat-icon style="margin-left: 8px">send</mat-icon>
+      </button>
+    </div>
+
   </form>
 </mat-card>

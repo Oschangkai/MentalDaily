@@ -4,10 +4,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth as fAuth, User as fUser } from 'firebase';
 
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, flatMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, of, from } from 'rxjs';
+import * as firebase from 'firebase';
 
 import { User } from '../model/user.model';
+
 
 
 @Injectable({
@@ -17,6 +19,7 @@ export class AuthService {
 
   fireUser$: Observable<fUser>;
   currentUser$ = new BehaviorSubject<User>(null);
+
 
   constructor(
     private _afAuth: AngularFireAuth,
@@ -44,11 +47,11 @@ export class AuthService {
 
   loginByGoogle() {
     this.storeUrl();
-    return from(this._afAuth.auth.signInWithPopup( new fAuth.GoogleAuthProvider() ))
-    .pipe(
-      tap(user => console.log(JSON.stringify(user))),
-      catchError(e => this.handleError(e))
-    )
+    return from(this._afAuth.auth.signInWithPopup(new fAuth.GoogleAuthProvider()))
+      .pipe(
+        tap(user => console.log(JSON.stringify(user))),
+        catchError(e => this.handleError(e))
+      )
   }
 
   resetPassword(oldPassword: string, newPassword: string) {
@@ -61,6 +64,16 @@ export class AuthService {
 
   logout() {
     return from(this._afAuth.auth.signOut());
+  }
+
+  signUpByEmail(email: string, password: string) {
+    return from(this._afAuth.auth.createUserWithEmailAndPassword(email, password))
+      .pipe(
+        tap(_ => {
+          this.logout();
+          this._router.navigateByUrl('/login');
+        }),
+        catchError(err => this.handleError(err)))
   }
 
   private storeUrl() {
@@ -80,7 +93,7 @@ export class AuthService {
 
 
   private handleError(err) {
-    switch(err.code) {
+    switch (err.code) {
       case "auth/wrong-password":
         return of("密碼錯誤");
       case "auth/user-not-found":
@@ -92,4 +105,6 @@ export class AuthService {
     }
     return of(`Error: ${err.code}`);
   }
+
 }
+
