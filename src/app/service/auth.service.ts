@@ -126,6 +126,8 @@ export class AuthService {
         return of("嘗試登入次數過多，請稍後再試");
       case "auth/network-request-failed":
         return of("請檢查網路連線");
+      case "auth/email-already-in-use":
+        return of("使用者已存在");
     }
     return of(`Error: ${err.code}`);
   }

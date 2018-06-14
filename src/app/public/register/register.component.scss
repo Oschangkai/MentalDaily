@@ -1,20 +1,56 @@
+.register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 65vh;
+  padding: 0 10px 0 10px;
+}
+.register-meta {
+  padding-right: 265px;
+}
+
 .register-card {
-  margin-top: 15%;
-  margin-left: 25%;
-  margin-right: 25%;
+  border-radius: 8px;
+}
+.register-card-button {
+  display: flex;
+  align-items: flex-end;
+  padding-top: 25px;
+  line-height: 36px;
+  font-size: 14px;
+}
+.register-spinner {
+  margin: 7px 18px;
 }
 
 .full-width {
   width: 100%;
 }
-
 .half-width {
   width: 45%;
 }
+.input-gap {
+  margin-left: 10%;
+}
 
-.register-card-button {
-  display: flex;
-  align-items: flex-end;
+@media only screen and (max-width: 435px) {
+  .register-meta {
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 0px;
+    width: 95%;
+  }
+  .half-width {
+    width: 100%;
+  }
+  .input-gap {
+    margin-left: 0;
+  }
+}
+
+.fill-space {
+  flex: 1 1 auto;
 }
 
 .send {
